@@ -31,3 +31,9 @@ build/
 
 ### VS Code ###
 .vscode/
+Mydir/ApsDesktop.jar
+Mydir/lib/commons-codec-1.11.jar
+Mydir/lib/commons-logging-1.2.jar
+Mydir/lib/gson-2.8.6.jar
+Mydir/lib/httpclient-4.5.12.jar
+Mydir/lib/httpcore-4.4.13.jar
