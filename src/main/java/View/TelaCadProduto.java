@@ -19,6 +19,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ComboBoxModel;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.text.MaskFormatter;
 
@@ -34,21 +36,26 @@ public class TelaCadProduto extends javax.swing.JFrame {
 
     public TelaCadProduto() {
         initComponents();
+
+        this.setLocationRelativeTo(null);
+        this.setResizable(false);
+        this.setTitle("Cadastro de Produto");
+
         produtoDAO = new ProdutoDAO();
         categoriaDAO = new CategoriaDAO();
         produto = new Produto();
-        
+
         popularComboBox();
 
     }
-    
-    private void popularComboBox(){
-        
+
+    private void popularComboBox() {
+
         try {
             List<Categoria> todasCategorias = categoriaDAO.getTodasCategorias();
-        
-            todasCategorias.forEach((cat)->jComboBoxCategoria.addItem(cat));
-            
+
+            todasCategorias.forEach((cat) -> jComboBoxCategoria.addItem(cat));
+
         } catch (Exception ex) {
             Logger.getLogger(TelaCadProduto.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -57,7 +64,7 @@ public class TelaCadProduto extends javax.swing.JFrame {
     private void popularTabela(List<Produto> listProdutos) {
 
         DefaultTableModel tableModel = (DefaultTableModel) jTableProduto.getModel();
-   
+
         tableModel.setRowCount(0);
 
         for (Produto p : listProdutos) {
@@ -107,7 +114,7 @@ public class TelaCadProduto extends javax.swing.JFrame {
         jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         jPanel1.setLayout(null);
 
-        jButtonNovo.setText("Novo");
+        jButtonNovo.setText("Salvar");
         jButtonNovo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonNovoActionPerformed(evt);
@@ -117,18 +124,33 @@ public class TelaCadProduto extends javax.swing.JFrame {
         jButtonNovo.setBounds(10, 50, 90, 30);
 
         jButtonCancelar.setText("Cancelar");
+        jButtonCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonCancelarActionPerformed(evt);
+            }
+        });
         jPanel1.add(jButtonCancelar);
         jButtonCancelar.setBounds(10, 80, 90, 30);
 
         jButtonEditar.setText("Editar");
+        jButtonEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonEditarActionPerformed(evt);
+            }
+        });
         jPanel1.add(jButtonEditar);
         jButtonEditar.setBounds(10, 110, 90, 30);
 
         jButtonExcluir.setText("Excluir");
+        jButtonExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonExcluirActionPerformed(evt);
+            }
+        });
         jPanel1.add(jButtonExcluir);
         jButtonExcluir.setBounds(10, 140, 90, 30);
 
-        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Dados"));
+        jPanel2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         jLabel4.setText("Preço :");
 
@@ -159,21 +181,21 @@ public class TelaCadProduto extends javax.swing.JFrame {
                     .addComponent(jLabel4)
                     .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jTextFieldCadPreco, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jTextFieldCadPreco, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jButtonImagem)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabelImagem, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jTextCadNome, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(12, 12, 12)
-                        .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jComboBoxCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 113, Short.MAX_VALUE)))
-                .addContainerGap())
+                        .addComponent(jLabelImagem, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jTextCadNome, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jComboBoxCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(46, 46, 46))))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -190,11 +212,11 @@ public class TelaCadProduto extends javax.swing.JFrame {
                     .addComponent(jLabel4)
                     .addComponent(jButtonImagem)
                     .addComponent(jLabelImagem, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(32, Short.MAX_VALUE))
+                .addContainerGap(21, Short.MAX_VALUE))
         );
 
         jPanel1.add(jPanel2);
-        jPanel2.setBounds(120, 10, 459, 120);
+        jPanel2.setBounds(120, 10, 459, 90);
 
         jButtonBuscar.setText("Buscar");
         jButtonBuscar.addActionListener(new java.awt.event.ActionListener() {
@@ -224,23 +246,23 @@ public class TelaCadProduto extends javax.swing.JFrame {
         jScrollPane1.setViewportView(jTableProduto);
 
         jPanel1.add(jScrollPane1);
-        jScrollPane1.setBounds(120, 160, 460, 200);
+        jScrollPane1.setBounds(120, 130, 460, 200);
 
-        jLabel5.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel5.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel5.setText("Produtos");
         jLabel5.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
         jPanel1.add(jLabel5);
-        jLabel5.setBounds(120, 140, 60, 20);
+        jLabel5.setBounds(120, 110, 70, 20);
 
         getContentPane().add(jPanel1);
-        jPanel1.setBounds(11, 44, 600, 380);
+        jPanel1.setBounds(11, 44, 600, 360);
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel1.setText("Cadastro Produto");
         getContentPane().add(jLabel1);
-        jLabel1.setBounds(207, 11, 157, 22);
+        jLabel1.setBounds(10, 10, 157, 22);
 
-        setSize(new java.awt.Dimension(642, 474));
+        setSize(new java.awt.Dimension(642, 454));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
@@ -256,23 +278,23 @@ public class TelaCadProduto extends javax.swing.JFrame {
         String fileName = file.getName();
         jLabelImagem.setText(fileName);
         produto.setImg(encodeFileToBase64(file));
-   
+
     }//GEN-LAST:event_jButtonImagemActionPerformed
-        private static String encodeFileToBase64(File file) {
-    try {
-        byte[] fileContent = Files.readAllBytes(file.toPath());
-        return Base64.getEncoder().encodeToString(fileContent);
-    } catch (IOException e) {
-        throw new IllegalStateException("could not read file " + file, e);
+
+    private static String encodeFileToBase64(File file) {
+        try {
+            byte[] fileContent = Files.readAllBytes(file.toPath());
+            return Base64.getEncoder().encodeToString(fileContent);
+        } catch (IOException e) {
+            throw new IllegalStateException("Could not read file " + file, e);
+        }
     }
-}
     private void jButtonBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBuscarActionPerformed
-            atualizaTabela();
+        atualizaTabela();
     }//GEN-LAST:event_jButtonBuscarActionPerformed
 
-    
-    private void atualizaTabela(){
-        
+    private void atualizaTabela() {
+
         List<Produto> todosProdutos;
         try {
             todosProdutos = produtoDAO.getTodosProdutos();
@@ -280,25 +302,122 @@ public class TelaCadProduto extends javax.swing.JFrame {
         } catch (Exception ex) {
             Logger.getLogger(TelaCadProduto.class.getName()).log(Level.SEVERE, null, ex);
         }
-            
+
     }
-    
+
     private void jButtonNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonNovoActionPerformed
-        produto.setDescricao(jTextCadNome.getText());
-        produto.setPreco(Double.parseDouble(jTextFieldCadPreco.getText()));
-        
-        Categoria categoria = (Categoria)jComboBoxCategoria.getSelectedItem();
-        produto.setIdCategoria(categoria.getIdCategoria());
-        
         try {
-            produtoDAO.novoProduto(produto);
-            atualizaTabela();
-            
-        } catch (Exception ex) {
-            Logger.getLogger(TelaCadProduto.class.getName()).log(Level.SEVERE, null, ex);
+            validarNovoProduto();
+
+            produto.setDescricao(jTextCadNome.getText());
+            produto.setPreco(Double.parseDouble(jTextFieldCadPreco.getText()));
+
+            Categoria categoria = (Categoria) jComboBoxCategoria.getSelectedItem();
+            produto.setIdCategoria(categoria.getIdCategoria());
+
+            gravarEditarProduto();
+            limparCampos();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
+    }//GEN-LAST:event_jButtonNovoActionPerformed
+
+    private void jButtonEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEditarActionPerformed
+        if (jTableProduto.getSelectedRowCount() > 1) {
+            JOptionPane.showMessageDialog(this, "Permitido Editar só um Registro por vez");
+        } else if (jTableProduto.getSelectedRowCount() == 0) {
+            JOptionPane.showMessageDialog(this, "Não Há Registro Para Editar");
+        } else {
+            int row = jTableProduto.getSelectedRow();
+            Integer idProduto = (Integer) jTableProduto.getModel().getValueAt(row, 0);
+            try {
+                Produto prod = produtoDAO.getProdutoById(idProduto);
+                produto.setIdProduto(prod.getIdProduto());
+                jTextCadNome.setText(prod.getDescricao());
+                jTextFieldCadPreco.setText(String.valueOf(prod.getPreco()));
+
+                for (int i = 0; i < jComboBoxCategoria.getItemCount(); i++) {
+                    Categoria cat = (Categoria) jComboBoxCategoria.getItemAt(i);
+                    if (cat.getIdCategoria() == prod.getIdCategoria()) {
+                        jComboBoxCategoria.setSelectedItem(cat);
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(this, e.getMessage());
+            }
+        }
+    }//GEN-LAST:event_jButtonEditarActionPerformed
+
+    private void jButtonCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCancelarActionPerformed
+        limparCampos();
+    }//GEN-LAST:event_jButtonCancelarActionPerformed
+
+    private void jButtonExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonExcluirActionPerformed
+        if (jTableProduto.getSelectedRowCount() > 1) {
+            JOptionPane.showMessageDialog(this, "Permitido Deletar só um Registro por vez");
+        } else if (jTableProduto.getSelectedRowCount() == 0) {
+            JOptionPane.showMessageDialog(this, "Não Há Registro Para Deletar");
+        } else {
+            int row = jTableProduto.getSelectedRow();
+            Integer idProduto = (Integer) jTableProduto.getModel().getValueAt(row, 0);
+            try {
+                produtoDAO.deletarProduto(idProduto);
+                atualizaTabela();
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, e.getMessage());
+            }
+        }
+    }//GEN-LAST:event_jButtonExcluirActionPerformed
+
+    private void validarNovoProduto() throws Exception {
+        if (jTextCadNome.getText() == null || jTextCadNome.getText().isEmpty()) {
+            throw new Exception("Nome Inválido");
+        }
+
+        if (jTextFieldCadPreco.getText() == null || jTextFieldCadPreco.getText().isEmpty()) {
+            throw new Exception("Preço Inválido");
+        } else {
+            try {
+                Double.parseDouble(jTextFieldCadPreco.getText());
+            } catch (Exception e) {
+                throw new Exception("Número Inválido");
+            }
+        }
+
+        if (jComboBoxCategoria.getSelectedItem() == null) {
+            throw new Exception("Categoria Inválida");
         }
         
-    }//GEN-LAST:event_jButtonNovoActionPerformed
+        if (produto.getIdProduto() == null) {
+            if (produto.getImg() == null || produto.getImg().isEmpty()) {
+                throw new Exception("Imagem Inválida");
+            }
+        }
+
+    }
+
+    private void gravarEditarProduto() {
+        try {
+            if(produto.getIdProduto() == null){
+               produtoDAO.novoProduto(produto); 
+            } else {
+                produtoDAO.alterarProduto(produto); 
+            }
+            atualizaTabela();
+
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage());
+        }
+    }
+
+    private void limparCampos() {
+        produto = new Produto();
+        jTextCadNome.setText("");
+        jTextFieldCadPreco.setText("");
+        jLabelImagem.setText("");
+        jComboBoxCategoria.setSelectedIndex(0);
+    }
 
     /**
      * @param args the command line arguments

@@ -102,7 +102,7 @@ public class TelaLogin extends javax.swing.JFrame {
         getContentPane().add(jLabelFundoLogin);
         jLabelFundoLogin.setBounds(130, 90, 240, 180);
         getContentPane().add(jLabel1);
-        jLabel1.setBounds(0, -10, 500, 390);
+        jLabel1.setBounds(0, 0, 500, 390);
 
         setSize(new java.awt.Dimension(515, 411));
         setLocationRelativeTo(null);
@@ -127,7 +127,7 @@ public class TelaLogin extends javax.swing.JFrame {
         LoginDAO loginDAO = new LoginDAO();
         try {
             loginDAO.logar(usuarioLogar);
-            TelaPrincipal tela = new TelaPrincipal();
+            TelaCadProduto tela = new TelaCadProduto();
             tela.setVisible(true);
             dispose();
         } catch (Exception ex) {
