@@ -25,4 +25,13 @@ public class ProdutoDAO extends GenericDAO{
                     }.getType() );
         
     }
+    
+       public void novoProduto(Produto produto) throws Exception{
+        HttpResponse response = this.post(produto, "/produto");
+        if(response.getStatusLine().getStatusCode() != 200){
+            throw new Exception("Falha ao Buscar Produtos");
+            
+        }
+       
+    }
 }
